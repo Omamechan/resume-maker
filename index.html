@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="toast-notification" class="alert alert-success shadow fw-bold" role="alert">
+    💾 下書き保存しました
+  </div>
+
+  <div class="modal fade" id="resetModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold text-danger">⚠️ 全内容のリセット</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          入力した内容をすべてクリアして初期状態に戻します。<br>よろしいですか？
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+          <button type="button" class="btn btn-danger fw-bold" onclick="executeClearAll()">リセットする</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar no-print">
+    <h5 class="fw-bold mb-3">📄 職務経歴書 作成</h5>
+    <button onclick="saveToLocal(true)" class="btn btn-primary w-100 mb-2 fw-bold">💾 途中で保存（下書き保存）</button>
+    <button onclick="togglePreview()" id="btn-toggle-preview" class="btn btn-success w-100 mb-2 fw-bold">👁️ 完成プレビュー / PDF化</button>
+    <button onclick="showResetModal()" class="btn btn-outline-danger w-100 mb-4 btn-sm">🗑️ 全内容をリセット</button>
+
+    <hr>
+    <div id="sidebar-card-section">
+      <h6 class="d-flex justify-content-between align-items-center mb-2">職歴リスト</h6>
+      <div class="card-list-area">
+        <div id="card-list"></div>
+        <button onclick="addCard()" class="btn btn-outline-secondary btn-sm w-100 mt-2">+ 新しい職歴を追加</button>
+        <div id="tab-skill" class="card-item mt-3 text-center fw-bold" onclick="switchTab('skill')">📌 資格・自己PR</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div id="input-form-area">
+      <div class="section-title">👤 基本情報</div>
+      <div class="form-section row">
+        <div class="col-md-6 mb-2">
+          <label class="form-label">氏名</label>
+          <input type="text" id="user_name" class="form-control" oninput="saveToLocal()" placeholder="例：山田 太郎">
+        </div>
+        <div class="col-md-12 mt-2">
+          <label class="form-label">職務要約（経歴の全体サマリー）</label>
+          <textarea id="summary" class="form-control" rows="3" oninput="saveToLocal()" placeholder="これまでの経歴や得意分野を記載します。"></textarea>
+        </div>
+      </div>
+
+      <div id="editor">
+        <div class="section-title">🏢 職歴の詳細入力</div>
+        <div class="form-section row">
+          <div class="col-md-12 mb-3">
+            <label class="form-label">正式な会社名（株式会社など省略せずに記入してください）</label>
+            <input type="text" id="company_name" class="form-control" oninput="saveToLocal()" placeholder="例：〇〇株式会社">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">入社年月</label>
+            <input type="month" id="from_ym" class="form-control" oninput="saveToLocal()">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">退職年月</label>
+            <div class="input-group">
+              <input type="month" id="to_ym" class="form-control" oninput="saveToLocal()">
+              <div class="input-group-text">
+                <input class="form-check-input mt-0" type="checkbox" id="is_current" onchange="toggleCurrentJob()">
+                <label class="form-check-label ms-1 small" for="is_current">在職中</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">雇用形態</label>
+            <select id="employment_type" class="form-select" onchange="saveToLocal()">
+              <option value="">選択してください</option>
+              <option value="正社員">正社員</option><option value="契約社員">契約社員</option><option value="派遣社員">派遣社員</option><option value="アルバイト">アルバイト</option><option value="パート">パート</option><option value="業務委託">業務委託</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">役職・リーダー経験</label>
+            <select id="has_position" class="form-select" onchange="togglePositionDetail()">
+              <option value="無し">無し</option><option value="有り">有り</option>
+            </select>
+            <div id="position_detail_container" class="mt-2 d-none">
+              <input type="text" id="position" class="form-control" oninput="saveToLocal()" placeholder="例：チームリーダー、店長など">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <label class="form-label mb-0 fs-6 text-primary">⚙️ 担当職種・業務内容</label>
+            <button type="button" class="btn btn-primary btn-sm fw-bold" onclick="addTaskBlock()">＋ 担当職種・業務内容を追加</button>
+          </div>
+          <div id="task-blocks-container"></div>
+        </div>
+
+        <div class="form-section row">
+          <div class="col-md-12 mb-3">
+            <label class="form-label">成果・実績（数字・定量的なデータなど）</label>
+            <textarea id="achievement_detail" class="form-control" rows="2" oninput="saveToLocal()" placeholder="例：作業プロセスの見直しにより環境負荷改善率15%を達成。"></textarea>
+          </div>
+          <div class="col-md-12">
+            <label class="form-label">社内評価・表彰等</label>
+            <textarea id="evaluation_detail" class="form-control" rows="2" oninput="saveToLocal()" placeholder="例：2025年度 社内功労賞を受賞"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div id="skill-editor" class="d-none">
+        <div class="section-title">📌 保有資格・スキル</div>
+        <div class="form-section">
+          <label class="form-label">資格の追加</label>
+          <div class="row g-2 mb-3 align-items-end">
+            <div class="col-md-3">
+              <label class="small text-muted">取得年月</label>
+              <input type="month" id="license_date" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label class="small text-muted">カテゴリ</label>
+              <select id="license_cat" class="form-select" onchange="updateLicenseOptions()">
+                <option value="">カテゴリ選択</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="small text-muted">資格名</label>
+              <select id="license_name" class="form-select"></select>
+              <input type="text" id="license_name_custom" class="form-control d-none" placeholder="資格名を直接入力">
+            </div>
+            <div class="col-md-2">
+              <label class="small text-muted">スコア/級/補足</label>
+              <input type="text" id="license_detail" class="form-control" placeholder="例：780点 / 合格">
+            </div>
+            <div class="col-md-12 mt-2">
+              <button type="button" class="btn btn-outline-primary w-100 btn-sm fw-bold" onclick="addLicense()">+ 資格を追加</button>
+            </div>
+          </div>
+          <div id="license-list" class="mb-4"></div>
+          <label class="form-label">使用可能ツール・特記事項（Excel、CAD、プログラム言語など）</label>
+          <textarea id="other_skills_common" class="form-control" rows="4" oninput="saveToLocal()" placeholder="例：Excel（VLOOKUP, ピボットテーブル）、Python（データ集計）"></textarea>
+        </div>
+
+        <div class="section-title">💡 身についたこと・アピール点</div>
+        <div class="form-section row">
+          <div class="col-md-12 mb-3">
+            <label class="form-label">これまでの業務で身についたこと</label>
+            <input type="text" id="skills" class="form-control" oninput="saveToLocal()" placeholder="例：課題を発見し、自動化ツールを活用して改善へ導く実行力">
+          </div>
+          <div class="col-md-12">
+            <label class="form-label">次に活かしたい点・自己PR</label>
+            <textarea id="next_use" class="form-control" rows="3" oninput="saveToLocal()" placeholder="例：これまで培った経験を活かし、貴社の事業推進に貢献します。"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="pdf-preview-area">
+      <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+        <button onclick="togglePreview()" class="btn btn-outline-secondary btn-sm">← 入力画面に戻る</button>
+        <button onclick="window.print()" class="btn btn-success fw-bold">🖨️ 印刷 / PDFでダウンロード</button>
+      </div>
+
+      <div class="doc-title">職 務 経 歴 書</div>
+      <div class="doc-meta">
+        <span id="pv-date"></span> 現在<br>
+        氏名：<span id="pv-name" class="fw-bold fs-6"></span>
+      </div>
+
+      <div id="pv-summary-block" style="display:none;">
+        <div class="doc-section-title">■ 職務要約</div>
+        <div id="pv-summary" class="doc-sub-text" style="white-space: pre-wrap;"></div>
+      </div>
+
+      <div class="doc-section-title">■ 職歴詳細</div>
+      <div id="pv-job-list"></div>
+
+      <div id="pv-skill-block" style="display:none;">
+        <div class="doc-section-title">■ 保有資格・スキル</div>
+        <div id="pv-licenses" class="doc-sub-text mb-2"></div>
+        <div id="pv-other-skills" class="doc-sub-text" style="white-space: pre-wrap;"></div>
+      </div>
+
+      <div id="pv-pr-block" style="display:none;">
+        <div class="doc-section-title">■ 自己PR・活かせる強み</div>
+        <div id="pv-skills" class="doc-sub-text mb-2"></div>
+        <div id="pv-next-use" class="doc-sub-text" style="white-space: pre-wrap;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
