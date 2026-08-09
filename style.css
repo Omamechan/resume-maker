@@ -294,4 +294,28 @@ body {
     padding: 15px !important;
     margin: 0 auto;
   }
+
+
+/* 担当職種・業務内容の見出しと追加ボタンを縦並び */
+.form-section > .d-flex.justify-content-between {
+  flex-direction: column;
+  align-items: stretch !important;
+  gap: 10px;
+}
+
+.form-section > .d-flex.justify-content-between .btn {
+  width: 100%;
+}
+
+/* 完成プレビュー上部のボタンを縦並び */
+#pdf-preview-area > .d-flex.justify-content-between {
+  flex-direction: column;
+  align-items: stretch !important;
+  gap: 10px;
+}
+
+#pdf-preview-area > .d-flex.justify-content-between .btn {
+  width: 100%;
+}
+
 }
