@@ -222,53 +222,76 @@ body {
 
  }
 
- /* ========================================
+/* ========================================
    スマートフォン表示
    ======================================== */
 @media screen and (max-width: 768px) {
 
-  /* 全体 */
   body {
     font-size: 14px;
+    overflow-x: hidden;
   }
 
-  /* 左側メニューを上部に移動 */
+  /* サイドバーを画面上部へ */
   .sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-    border-right: none;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    border-right: none !important;
     border-bottom: 1px solid #dee2e6;
-    padding: 15px;
+    padding: 12px !important;
+    display: block !important;
   }
 
-  /* 入力画面を画面いっぱいにする */
-  .main-content {
-    margin-left: 0;
-    padding: 15px;
-    width: 100%;
-  }
-
-  /* 職歴リストが長くなっても自然に表示 */
+  /* 職歴リスト */
   .card-list-area {
-    overflow-y: visible;
+    overflow-y: visible !important;
+    max-height: none !important;
   }
 
-  /* 入力エリア */
+  /* メイン入力エリアを全幅に */
+  .main-content {
+    margin-left: 0 !important;
+    padding: 12px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* 入力カード */
   .form-section {
-    padding: 15px;
+    padding: 14px !important;
   }
 
-  /* 担当職種・業務内容 */
   .task-block {
-    padding: 12px;
+    padding: 12px !important;
+  }
+
+  /* Bootstrapの横並びをスマホでは縦並びに */
+  .row > [class*="col-"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  /* 入力欄・選択欄 */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* ボタンは押しやすく */
+  .sidebar .btn {
+    width: 100%;
+    margin-bottom: 8px;
   }
 
   /* PDFプレビュー */
   #pdf-preview-area {
-    width: 100%;
-    max-width: 100%;
-    padding: 20px;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 15px !important;
+    margin: 0 auto;
   }
 }
-
