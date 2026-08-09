@@ -60,6 +60,60 @@
   </div>
 </div>
 
+<!-- 氏名未入力警告モーダル -->
+<div class="modal fade" id="userNameWarningModal" tabindex="-1" aria-labelledby="userNameWarningLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold text-warning" id="userNameWarningLabel">
+          ⚠️ 氏名が未入力です
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+      </div>
+
+      <div class="modal-body">
+        氏名が入力されていません。<br>
+        氏名を入力してから完成プレビューを作成してください。
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary fw-bold" data-bs-dismiss="modal">
+          入力画面に戻る
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 職種・業務内容未入力警告モーダル -->
+<div class="modal fade" id="jobDetailWarningModal" tabindex="-1" aria-labelledby="jobDetailWarningLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold text-warning" id="jobDetailWarningLabel">
+          ⚠️ 職種・業務内容が未入力です
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+      </div>
+
+      <div class="modal-body">
+        職歴は入力されていますが、職種・業務内容が入力されていない箇所があります。<br>
+        内容を入力してから完成プレビューを作成してください。
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary fw-bold" data-bs-dismiss="modal">
+          入力画面に戻る
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
   <div class="sidebar no-print">
     <h5 class="fw-bold mb-3">📄 職務経歴書 作成</h5>
     <button onclick="saveToLocal(true)" class="btn btn-primary w-100 mb-2 fw-bold">💾 途中で保存（下書き保存）</button>

@@ -76,6 +76,18 @@ function togglePreview() {
 
   // 入力画面 → プレビューへ進むときだけ事前チェック
   if (!isPreviewMode) {
+
+    // 氏名が未入力か確認
+const userName = document.getElementById('user_name').value.trim();
+
+if (!userName) {
+  const warningModal = new bootstrap.Modal(
+    document.getElementById('userNameWarningModal')
+  );
+  warningModal.show();
+  return;
+}
+
     const hasMissingCompanyName = state.cards.some(c => {
       const hasTaskInput = (c.task_blocks || []).some(tb =>
         tb.job_category ||
@@ -98,6 +110,28 @@ function togglePreview() {
    if (hasMissingCompanyName) {
   const warningModal = new bootstrap.Modal(
     document.getElementById('companyNameWarningModal')
+  );
+  warningModal.show();
+  return;
+}
+
+// 会社名はあるが、職種・業務内容が未入力の職歴がないか確認
+const hasMissingJobDetail = state.cards.some(c => {
+  if (!c.company_name) return false;
+
+  const hasTaskInput = (c.task_blocks || []).some(tb =>
+  tb.job_category ||
+  tb.job_type ||
+  (tb.main_tasks && tb.main_tasks.length > 0) ||
+  tb.task_other_detail
+);
+
+  return !hasTaskInput;
+});
+
+if (hasMissingJobDetail) {
+  const warningModal = new bootstrap.Modal(
+    document.getElementById('jobDetailWarningModal')
   );
   warningModal.show();
   return;
@@ -252,8 +286,15 @@ function syncCurrentCardFromDOM() {
         : div.querySelector('.tb-subcat').value;
       const freq = div.querySelector('.tb-freq').value;
       const supp = div.querySelector('.tb-supplement').value;
-      const otherDet = div.querySelector('.tb-other-detail') ? div.querySelector('.tb-other-detail').value : '';
+      
       const checkedTasks = Array.from(div.querySelectorAll('.tb-checkboxes input:checked')).map(c => c.value);
+      
+      const otherDet =
+  checkedTasks.includes('その他') && div.querySelector('.tb-other-detail')
+    ? div.querySelector('.tb-other-detail').value
+    : '';
+     
+
 
       newBlocks.push({
         job_category: cat,
