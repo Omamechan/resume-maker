@@ -156,6 +156,15 @@
  }
 
  @media print {
+
+  html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
    body {
      background: white !important;
      font-size: 11pt;
@@ -170,19 +179,26 @@
    }
 
    .main-content {
-     margin-left: 0 !important;
-     padding: 0 !important;
-     width: 100% !important;
-     background: white !important;
-   }
+  margin-left: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  background: white !important;
+}
 
    #pdf-preview-area {
-     display: block !important;
-     border: none !important;
-     box-shadow: none !important;
-     padding: 0 !important;
-     width: 100% !important;
-   }
+  display: block !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
 
    #input-form-area {
      display: none !important;
@@ -205,3 +221,54 @@
    }
 
  }
+
+ /* ========================================
+   スマートフォン表示
+   ======================================== */
+@media screen and (max-width: 768px) {
+
+  /* 全体 */
+  body {
+    font-size: 14px;
+  }
+
+  /* 左側メニューを上部に移動 */
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px;
+  }
+
+  /* 入力画面を画面いっぱいにする */
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+    width: 100%;
+  }
+
+  /* 職歴リストが長くなっても自然に表示 */
+  .card-list-area {
+    overflow-y: visible;
+  }
+
+  /* 入力エリア */
+  .form-section {
+    padding: 15px;
+  }
+
+  /* 担当職種・業務内容 */
+  .task-block {
+    padding: 12px;
+  }
+
+  /* PDFプレビュー */
+  #pdf-preview-area {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+  }
+}
+
