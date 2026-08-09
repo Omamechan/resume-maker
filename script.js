@@ -3,12 +3,57 @@ let isPreviewMode = false;
 let resetModalObj = null;
 
 const embeddedLicenseMaster = {
-  "自動車・運転免許": ["普通自動車第一種運転免許", "普通自動車第二種運転免許", "大型自動車第一種運転免許", "フォークリフト運転技能講習", "中型自動車免許"],
-  "IT・情報処理・Web": ["基本情報技術者試験", "応用情報技術者試験", "ITパスポート試験", "情報処理安全確保支援士", "AWS Certified Solutions Architect", "HTML5プロフェッショナル認定"],
-  "事務・会計・語学": ["TOEIC L&R", "実用英語技能検定", "日商簿記検定 1級", "日商簿記検定 2級", "日商簿記検定 3級", "秘書技能検定", "ファイナンシャル・プランナー（FP）"],
-  "技術・建築・不動産": ["第一種電気工事士", "第二種電気工事士", "宅地建物取引士（宅建）", "1級建築士", "2級建築士", "危険物取扱者 乙種4類", "1級土木施工管理技士"],
-  "医療・福祉・飲食": ["介護福祉士", "社会福祉士", "看護師", "登録販売者", "調理師", "食品衛生責任者"],
-  "★ リストにない資格（直接入力）": ["直接入力"]
+  "自動車・運転免許": [
+    "普通自動車第一種運転免許",
+    "普通自動車第二種運転免許",
+    "大型自動車第一種運転免許",
+    "中型自動車免許",
+    "フォークリフト運転技能講習"
+  ],
+
+  "IT・情報処理・Web": [
+    "ITパスポート試験",
+    "基本情報技術者試験",
+    "応用情報技術者試験",
+    "情報処理安全確保支援士",
+    "AWS Certified Solutions Architect",
+    "HTML5プロフェッショナル認定"
+  ],
+
+  "事務・会計・語学": [
+    "Microsoft Office Specialist（MOS）",
+    "日商簿記検定 1級",
+    "日商簿記検定 2級",
+    "日商簿記検定 3級",
+    "秘書技能検定",
+    "TOEIC L&R",
+    "実用英語技能検定",
+    "ファイナンシャル・プランナー（FP）"
+  ],
+
+  "技術・建築・不動産": [
+    "第一種電気工事士",
+    "第二種電気工事士",
+    "宅地建物取引士（宅建）",
+    "1級建築士",
+    "2級建築士",
+    "危険物取扱者 乙種4類",
+    "1級土木施工管理技士"
+  ],
+
+  "医療・福祉・飲食": [
+    "薬剤師",
+    "看護師",
+    "介護福祉士",
+    "社会福祉士",
+    "登録販売者",
+    "調理師",
+    "食品衛生責任者"
+  ],
+
+  "★ リストにない資格（直接入力）": [
+    "直接入力"
+  ]
 };
 
 const jobData = {
@@ -773,8 +818,16 @@ function buildPdfPreview() {
       return dateB.localeCompare(dateA);
     });
 
-    document.getElementById('pv-licenses').innerHTML = sortedLicenses.map(l => `・${l.date ? l.date.replace('-', '年') + '月 ' : ''}${l.name} ${l.detail ? '(' + l.detail + ')' : ''}`).join('');
-    document.getElementById('pv-other-skills').innerText = otherSkillsText;
+    document.getElementById('pv-licenses').innerHTML = sortedLicenses.length
+      ? `<div class="doc-item-title">【保有資格】</div>` +
+      sortedLicenses
+        .map(l => `<div>・${l.date ? l.date.replace('-', '年') + '月 ' : ''}${l.name}${l.detail ? ' (' + l.detail + ')' : ''}</div>`)
+        .join('')
+      : '';
+    document.getElementById('pv-other-skills').innerHTML = otherSkillsText.trim()
+      ? `<div class="doc-item-title">【使用可能ツール・特記事項】</div>
+     <div>${otherSkillsText.replace(/\n/g, '<br>')}</div>`
+      : '';
   } else {
     document.getElementById('pv-skill-block').style.display = 'none';
   }
