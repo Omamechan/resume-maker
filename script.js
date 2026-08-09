@@ -73,15 +73,54 @@ function updateLicenseOptions() {
 
 function togglePreview() {
   syncCurrentCardFromDOM();
-  isPreviewMode = !isPreviewMode;
-  document.getElementById('input-form-area').style.display = isPreviewMode ? 'none' : 'block';
-  document.getElementById('pdf-preview-area').style.display = isPreviewMode ? 'block' : 'none';
-  document.getElementById('sidebar-card-section').style.display = isPreviewMode ? 'none' : 'block';
-  document.getElementById('btn-toggle-preview').innerText = isPreviewMode ? '✏️ 入力画面に戻る' : '👁️ 完成プレビュー / PDF化';
 
-  if (isPreviewMode) {
+  // 入力画面 → プレビューへ進むときだけ事前チェック
+  if (!isPreviewMode) {
+    const hasMissingCompanyName = state.cards.some(c => {
+      const hasTaskInput = (c.task_blocks || []).some(tb =>
+        tb.job_category ||
+        tb.job_type ||
+        (tb.main_tasks && tb.main_tasks.length > 0) ||
+        tb.task_other_detail ||
+        tb.task_freq ||
+        tb.detail
+      );
+
+      const hasOtherInput =
+        c.from_ym ||
+        c.to_ym ||
+        c.is_current ||
+        hasTaskInput;
+
+      return !c.company_name && hasOtherInput;
+    });
+
+   if (hasMissingCompanyName) {
+  const warningModal = new bootstrap.Modal(
+    document.getElementById('companyNameWarningModal')
+  );
+  warningModal.show();
+  return;
+}
+
+    // チェックを通過したらプレビュー内容を作成
     buildPdfPreview();
   }
+
+  // ここまで来てから画面を切り替える
+  isPreviewMode = !isPreviewMode;
+
+  document.getElementById('input-form-area').style.display =
+    isPreviewMode ? 'none' : 'block';
+
+  document.getElementById('pdf-preview-area').style.display =
+    isPreviewMode ? 'block' : 'none';
+
+  document.getElementById('sidebar-card-section').style.display =
+    isPreviewMode ? 'none' : 'block';
+
+  document.getElementById('btn-toggle-preview').innerText =
+    isPreviewMode ? '📝 入力画面に戻る' : '👁 完成プレビュー／PDF化';
 }
 
 function compareCards(a, b) {
@@ -93,6 +132,8 @@ function compareCards(a, b) {
 }
 
 function buildPdfPreview() {
+
+
   const today = new Date();
   document.getElementById('pv-date').innerText = today.getFullYear() + '年' + (today.getMonth() + 1) + '月' + today.getDate() + '日';
   document.getElementById('pv-name').innerText = document.getElementById('user_name').value || '    ';
