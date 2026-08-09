@@ -78,15 +78,15 @@ function togglePreview() {
   if (!isPreviewMode) {
 
     // 氏名が未入力か確認
-const userName = document.getElementById('user_name').value.trim();
+    const userName = document.getElementById('user_name').value.trim();
 
-if (!userName) {
-  const warningModal = new bootstrap.Modal(
-    document.getElementById('userNameWarningModal')
-  );
-  warningModal.show();
-  return;
-}
+    if (!userName) {
+      const warningModal = new bootstrap.Modal(
+        document.getElementById('userNameWarningModal')
+      );
+      warningModal.show();
+      return;
+    }
 
     const hasMissingCompanyName = state.cards.some(c => {
       const hasTaskInput = (c.task_blocks || []).some(tb =>
@@ -107,35 +107,35 @@ if (!userName) {
       return !c.company_name && hasOtherInput;
     });
 
-   if (hasMissingCompanyName) {
-  const warningModal = new bootstrap.Modal(
-    document.getElementById('companyNameWarningModal')
-  );
-  warningModal.show();
-  return;
-}
+    if (hasMissingCompanyName) {
+      const warningModal = new bootstrap.Modal(
+        document.getElementById('companyNameWarningModal')
+      );
+      warningModal.show();
+      return;
+    }
 
-// 会社名はあるが、職種・業務内容が未入力の職歴がないか確認
-const hasMissingJobDetail = state.cards.some(c => {
-  if (!c.company_name) return false;
+    // 会社名はあるが、職種・業務内容が未入力の職歴がないか確認
+    const hasMissingJobDetail = state.cards.some(c => {
+      if (!c.company_name) return false;
 
-  const hasTaskInput = (c.task_blocks || []).some(tb =>
-  tb.job_category ||
-  tb.job_type ||
-  (tb.main_tasks && tb.main_tasks.length > 0) ||
-  tb.task_other_detail
-);
+      const hasTaskInput = (c.task_blocks || []).some(tb =>
+        tb.job_category ||
+        tb.job_type ||
+        (tb.main_tasks && tb.main_tasks.length > 0) ||
+        tb.task_other_detail
+      );
 
-  return !hasTaskInput;
-});
+      return !hasTaskInput;
+    });
 
-if (hasMissingJobDetail) {
-  const warningModal = new bootstrap.Modal(
-    document.getElementById('jobDetailWarningModal')
-  );
-  warningModal.show();
-  return;
-}
+    if (hasMissingJobDetail) {
+      const warningModal = new bootstrap.Modal(
+        document.getElementById('jobDetailWarningModal')
+      );
+      warningModal.show();
+      return;
+    }
 
     // チェックを通過したらプレビュー内容を作成
     buildPdfPreview();
@@ -192,8 +192,8 @@ function buildPdfPreview() {
     block.className = 'doc-block';
 
     let period = '';
-    if (c.from_ym) period += c.from_ym.replace('-', '/') + ' 〜 ';
-    period += c.is_current ? '現在（在職中）' : (c.to_ym ? c.to_ym.replace('-', '/') : '');
+    if (c.from_ym) period += c.from_ym.replace('-', '年') + '月 ～ ';
+    period += c.is_current ? '現在（在職中）' : (c.to_ym ? c.to_ym.replace('-', '年') + '月' : '');
 
     let tasksHtml = '';
     (c.task_blocks || []).forEach(tb => {
@@ -243,7 +243,7 @@ function buildPdfPreview() {
       return dateB.localeCompare(dateA);
     });
 
-    document.getElementById('pv-licenses').innerHTML = sortedLicenses.map(l => `・${l.date ? l.date.replace('-', '/') + ' ' : ''}${l.name} ${l.detail ? '(' + l.detail + ')' : ''}`).join('<br>');
+    document.getElementById('pv-licenses').innerHTML = sortedLicenses.map(l => `・${l.date ? l.date.replace('-', '年') + '月 ' : ''}${l.name} ${l.detail ? '(' + l.detail + ')' : ''}`).join('');
     document.getElementById('pv-other-skills').innerText = otherSkillsText;
   } else {
     document.getElementById('pv-skill-block').style.display = 'none';
@@ -286,14 +286,14 @@ function syncCurrentCardFromDOM() {
         : div.querySelector('.tb-subcat').value;
       const freq = div.querySelector('.tb-freq').value;
       const supp = div.querySelector('.tb-supplement').value;
-      
+
       const checkedTasks = Array.from(div.querySelectorAll('.tb-checkboxes input:checked')).map(c => c.value);
-      
+
       const otherDet =
-  checkedTasks.includes('その他') && div.querySelector('.tb-other-detail')
-    ? div.querySelector('.tb-other-detail').value
-    : '';
-     
+        checkedTasks.includes('その他') && div.querySelector('.tb-other-detail')
+          ? div.querySelector('.tb-other-detail').value
+          : '';
+
 
 
       newBlocks.push({

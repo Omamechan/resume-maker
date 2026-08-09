@@ -157,13 +157,13 @@
 
  @media print {
 
-  html,
-body {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  height: auto !important;
-}
+   html,
+   body {
+     margin: 0 !important;
+     padding: 0 !important;
+     width: 100% !important;
+     height: auto !important;
+   }
 
    body {
      background: white !important;
@@ -179,26 +179,26 @@ body {
    }
 
    .main-content {
-  margin-left: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  min-height: 0 !important;
-  height: auto !important;
-  background: white !important;
-}
+     margin-left: 0 !important;
+     margin: 0 !important;
+     padding: 0 !important;
+     width: 100% !important;
+     min-height: 0 !important;
+     height: auto !important;
+     background: white !important;
+   }
 
    #pdf-preview-area {
-  display: block !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  width: 100% !important;
-  max-width: none !important;
-  min-height: 0 !important;
-  height: auto !important;
-}
+     display: block !important;
+     border: none !important;
+     box-shadow: none !important;
+     padding: 0 !important;
+     margin: 0 !important;
+     width: 100% !important;
+     max-width: none !important;
+     min-height: 0 !important;
+     height: auto !important;
+   }
 
    #input-form-area {
      display: none !important;
@@ -222,100 +222,100 @@ body {
 
  }
 
-/* ========================================
+ /* ========================================
    スマートフォン表示
    ======================================== */
-@media screen and (max-width: 768px) {
+ @media screen and (max-width: 768px) {
 
-  body {
-    font-size: 14px;
-    overflow-x: hidden;
-  }
+   body {
+     font-size: 14px;
+     overflow-x: hidden;
+   }
 
-  /* サイドバーを画面上部へ */
-  .sidebar {
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    border-right: none !important;
-    border-bottom: 1px solid #dee2e6;
-    padding: 12px !important;
-    display: block !important;
-  }
+   /* サイドバーを画面上部へ */
+   .sidebar {
+     position: static !important;
+     width: 100% !important;
+     height: auto !important;
+     border-right: none !important;
+     border-bottom: 1px solid #dee2e6;
+     padding: 12px !important;
+     display: block !important;
+   }
 
-  /* 職歴リスト */
-  .card-list-area {
-    overflow-y: visible !important;
-    max-height: none !important;
-  }
+   /* 職歴リスト */
+   .card-list-area {
+     overflow-y: visible !important;
+     max-height: none !important;
+   }
 
-  /* メイン入力エリアを全幅に */
-  .main-content {
-    margin-left: 0 !important;
-    padding: 12px !important;
-    width: 100% !important;
-    min-width: 0 !important;
-  }
+   /* メイン入力エリアを全幅に */
+   .main-content {
+     margin-left: 0 !important;
+     padding: 12px !important;
+     width: 100% !important;
+     min-width: 0 !important;
+   }
 
-  /* 入力カード */
-  .form-section {
-    padding: 14px !important;
-  }
+   /* 入力カード */
+   .form-section {
+     padding: 14px !important;
+   }
 
-  .task-block {
-    padding: 12px !important;
-  }
+   .task-block {
+     padding: 12px !important;
+   }
 
-  /* Bootstrapの横並びをスマホでは縦並びに */
-  .row > [class*="col-"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-  }
+   /* Bootstrapの横並びをスマホでは縦並びに */
+   .row>[class*="col-"] {
+     width: 100% !important;
+     max-width: 100% !important;
+     flex: 0 0 100% !important;
+   }
 
-  /* 入力欄・選択欄 */
-  input,
-  select,
-  textarea {
-    width: 100%;
-    max-width: 100%;
-  }
+   /* 入力欄・選択欄 */
+   input,
+   select,
+   textarea {
+     width: 100%;
+     max-width: 100%;
+   }
 
-  /* ボタンは押しやすく */
-  .sidebar .btn {
-    width: 100%;
-    margin-bottom: 8px;
-  }
+   /* ボタンは押しやすく */
+   .sidebar .btn {
+     width: 100%;
+     margin-bottom: 8px;
+   }
 
-  /* PDFプレビュー */
-  #pdf-preview-area {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 15px !important;
-    margin: 0 auto;
-  }
+   /* PDFプレビュー */
+   #pdf-preview-area {
+     width: 100% !important;
+     max-width: 100% !important;
+     padding: 15px !important;
+     margin: 0 auto;
+   }
 
 
-/* 担当職種・業務内容の見出しと追加ボタンを縦並び */
-.form-section > .d-flex.justify-content-between {
-  flex-direction: column;
-  align-items: stretch !important;
-  gap: 10px;
-}
+   /* 担当職種・業務内容の見出しと追加ボタンを縦並び */
+   .form-section>.d-flex.justify-content-between {
+     flex-direction: column;
+     align-items: stretch !important;
+     gap: 10px;
+   }
 
-.form-section > .d-flex.justify-content-between .btn {
-  width: 100%;
-}
+   .form-section>.d-flex.justify-content-between .btn {
+     width: 100%;
+   }
 
-/* 完成プレビュー上部のボタンを縦並び */
-#pdf-preview-area > .d-flex.justify-content-between {
-  flex-direction: column;
-  align-items: stretch !important;
-  gap: 10px;
-}
+   /* 完成プレビュー上部のボタンを縦並び */
+   #pdf-preview-area>.d-flex.justify-content-between {
+     flex-direction: column;
+     align-items: stretch !important;
+     gap: 10px;
+   }
 
-#pdf-preview-area > .d-flex.justify-content-between .btn {
-  width: 100%;
-}
+   #pdf-preview-area>.d-flex.justify-content-between .btn {
+     width: 100%;
+   }
 
-}
+ }
